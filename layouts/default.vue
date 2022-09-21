@@ -45,7 +45,7 @@ export default {
 
 .data-table__header {
   font-family: "Inter";
-  margin-bottom: 8px;
+  margin-bottom: 14px;
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
@@ -60,7 +60,7 @@ export default {
   padding: 0;
   margin: 0;
 }
-.v-tabs-slider{
+.v-tabs-slider {
   width: 90% !important;
   display: flex;
   align-items: center;
@@ -69,5 +69,41 @@ export default {
 .tab__liner {
   border-bottom: 2px solid #c6c2de !important;
   transform: translateY(-1px);
+}
+.v-icon {
+  color: #8b83ba !important;
+}
+.v-input__slot fieldset {
+  border-radius: 50px !important;
+}
+input::placeholder {
+  color: #6e6893 !important;
+  font-size: 13px !important;
+}
+.v-data-table table thead {
+  background-color: #f4f2ff !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 2px solid #c6c2de !important;
+}
+
+.v-data-table table thead tr th {
+  border-bottom: none !important;
+}
+
+tbody tr td {
+  color: #25213b;
+  height: 58px !important;
+}
+
+.v-data-table table thead tr th span {
+  font-weight: bolder !important;
+  font-size: 14px !important;
+
+  color: #6e6893 !important;
+}
+tr:hover {
+  background-color: #fbf9ff !important;
+  cursor: pointer;
 }
 </style>

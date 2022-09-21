@@ -27,7 +27,9 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    '~/plugins/axios'
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -47,17 +49,17 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: 'https://cornie-assessment.herokuapp.com/',
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: false,
+      light: true,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
+        light: {
+          primary: "#8B83BA",
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
