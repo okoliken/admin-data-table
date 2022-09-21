@@ -11,6 +11,7 @@
           <v-tab>Unpaid</v-tab>
           <v-tab>Overdue</v-tab>
         </v-tabs>
+        
         <nuxt />
       </v-container>
     </v-main>

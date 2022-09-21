@@ -32,6 +32,7 @@
                 background-color="#F4F2FF"
                 height="40px"
                 class="ml-4"
+                v-model="search"
                 max-width="392px"
                 placeholder="Search Users by Name, Email or Date"
                 prepend-inner-icon="mdi-magnify"
@@ -55,6 +56,7 @@
             :items="all_users"
             :loading="loading"
             :items-per-page="100"
+            :search="search"
           >
             <template v-slot:item.firstName="{ item }">
               <v-layout column>
@@ -125,6 +127,12 @@
               <span class="font-weight-bold">${{ item.amountInCents }}</span>
               <span class="d-block">USD</span>
             </template>
+
+            <template v-slot:item.actions="{ item }">
+              <v-btn icon>
+                <v-icon small> mdi-dots-vertical </v-icon></v-btn
+              >
+            </template>
           </v-data-table>
         </div>
       </v-card>
@@ -149,11 +157,12 @@ export default {
         { text: "USER STATUS", value: "userStatus", sortable: false },
         { text: "PAYMENT STATUS", value: "paymentStatus", sortable: false },
         { text: "AMOUNT", value: "amountInCents", sortable: false },
-        // { text: "Action", value: "action", sortable: false },
+        { text: "", value: "actions", sortable: false },
       ],
       candidateId: "22XkZJQ5i87gvSY",
       all_users: [],
       loading: false,
+      search:''
     };
   },
   methods: {
