@@ -1,6 +1,7 @@
 export const state = () => ({
   all_users: [],
   candidateId: "22XkZJQ5i87gvSY",
+  filterType: "",
 });
 
 export const getters = {
@@ -8,8 +9,10 @@ export const getters = {
     let array_of_amounts = [];
     let initValue = 0;
 
-    state.all_users.map((amount) => {
-      return array_of_amounts.push(amount.amountInCents);
+    state.all_users.map((user) => {
+      if (user.paymentStatus !== "overdue") {
+        return array_of_amounts.push(user.amountInCents);
+      }
     });
 
     for (var i = 0; i < array_of_amounts.length; i++) {
@@ -21,28 +24,14 @@ export const getters = {
 };
 
 export const mutations = {
-  allPaidPayments(state) {
-    let values = [];
-    state.all_users.map((payments) => {
-      if (payments.paymentStatus === "paid") {
-        values.push(payments);
-      }
-    });
-     console.log(state.all_users = values);
-  },
-  allOverduePayments(state) {
-    let values = [];
-    state.all_users.filter((payments) => {
-      if (payments.paymentStatus === "overdue") {
-        values.push(payments);
-      }
-    });
-    return (state.all_users = values);
+  mutateFilterType(state, payload) {
+    state.filterType = payload;
   },
 };
 
 export const actions = {
   async get_all_users({ state }) {
+    state.filterType = "";
     const data = await this.$axios.$get(`/users/${state.candidateId}`);
     state.all_users = data.data;
     return data;

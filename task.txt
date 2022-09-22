@@ -1,0 +1,20 @@
+ As the admin, I will want to see the total payable amount on the table
+head as the sum of user amounts that are either unpaid or overdue. --- DONE
+
+● There are tabs All, Paid, Unpaid, and Overdue corresponding with user
+payment status. Users under the “Paid” tab should be those with status
+“Paid”, same applies to “Unpaid” and “Overdue”, with “All” containing all
+users regardless of their payment status. --- DONE
+
+● The datatable should be searchable using the search input on top of the
+table; the search should be done client side only. --- DONE
+
+● Each row of users should be expandable to show details of the user.
+
+● As the admin, I would like to sort the table of users according to the
+users’ first name, last name, and email.
+
+● As the admin, I would like to select a user row previously marked as
+unpaid and mark it as paid by checking the checkbox on the row and
+clicking the pay dues button on the top right of the table. NB: this
+service is provided by the api endpoint labelled ‘mark-paid’. --- DONE

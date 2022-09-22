@@ -4,7 +4,7 @@
       <v-card class="my-5 pa-3">
         <v-layout justify-space-between>
           <v-flex md5 class="d-flex">
-            <v-menu  offset-y :close-on-click="false">
+            <v-menu offset-y :close-on-click="false">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   v-bind="attrs"
@@ -24,7 +24,7 @@
                     <h4>Sort by:</h4>
 
                     <div>
-                      <div >
+                      <div>
                         <v-radio-group v-model="radioGroup">
                           <v-radio
                             dense
@@ -87,7 +87,14 @@
             </v-flex>
           </v-flex>
 
-          <v-btn depressed height="40px" class="white--text" color="#6D5BD0">
+          <v-btn
+            depressed
+            @click="change_payment_status"
+            :loading="updating"
+            height="40px"
+            class="white--text"
+            color="#6D5BD0"
+          >
             PAY DUES
           </v-btn>
         </v-layout>
@@ -104,6 +111,10 @@
             :loading="loading"
             :items-per-page="100"
             :search="search"
+            show-expand
+            :single-expand="singleExpand"
+            :expanded.sync="expanded"
+            @input="get_payment_id"
           >
             <template v-slot:item.firstName="{ item }">
               <v-layout column>
@@ -178,6 +189,12 @@
             <template v-slot:item.actions="{ item }">
               <v-btn icon> <v-icon small> mdi-dots-vertical </v-icon></v-btn>
             </template>
+
+            <template v-slot:expanded-item="{ headers, item }">
+              <th :colspan="headers.length">
+                More info about {{ item.amountInCents }}
+              </th>
+            </template>
           </v-data-table>
         </div>
       </v-card>
@@ -192,6 +209,8 @@ export default {
   data() {
     return {
       selected: [],
+      singleExpand: true,
+      expanded: [],
       headers: [
         {
           text: "NAME",
@@ -208,14 +227,62 @@ export default {
       search: "",
       radioGroup: 1,
       radioGroup2: 1,
+      id: "",
+      updating: false,
+      url: "",
     };
   },
-  computed:{
-    all_users(){
-      return this.$store.state.all_users
-    }
+  computed: {
+    // RETURN COMPUTED VALUE OF ALL USERS, ALSO FILTERS USERS BASED ON PAYMENT TYPE
+    all_users() {
+      if (!this.filter_type) return this.$store.state.all_users;
+      return this.$store.state.all_users.filter((payments) => {
+        return payments.paymentStatus == this.filter_type;
+      });
+    },
+    // END
+    // RETURNS PAYMENT TYPE
+    filter_type() {
+      return this.$store.state.filterType;
+    },
+    // END
   },
   methods: {
+    get_payment_id(value) {
+      // GET USER ID
+      value.forEach((val) => {
+        this.id = val.id;
+      });
+      // END
+
+      // CHECK FOR PAYMENT STATUS FOR PAID AND UNPAID THEN ASSIGN THE RESPECTIVE ENDPOINT URL
+      this.selected.forEach((val) => {
+        if (val.paymentStatus === "paid") {
+          this.url = `/mark-unpaid/${this.id}`;
+        } else if (val.paymentStatus === "unpaid") {
+          this.url = `/mark-paid/${this.id}`;
+        } else this.url = `/mark-paid/${this.id}`;
+      });
+      // END
+    },
+    // CHANGE PAYMENT STATUS
+    async change_payment_status() {
+      if (this.selected.length) {
+        this.updating = true;
+        await this.$axios
+          .patch(this.url)
+          .then(() => {
+            this.getAllPayments();
+            this.updating = false;
+          })
+          .catch((err) => {
+            return err;
+          });
+        this.updating = false;
+      } else return;
+    },
+    // END
+
     paymentColor(col) {
       if (col == "paid") {
         return "#007F00";
@@ -233,14 +300,15 @@ export default {
     formatNullValues(value) {
       return value == null ? "No data" : value;
     },
+    async getAllPayments() {
+      this.loading = true;
+      await this.$store.dispatch("get_all_users").then(() => {
+        this.loading = false;
+      });
+    },
   },
   mounted() {
-    this.loading = true;
-    this.$store.dispatch("get_all_users").then(() => {
-      this.loading = false;
-    });
-
-   
+    this.getAllPayments();
   },
 };
 </script>
@@ -279,7 +347,8 @@ export default {
   background-color: #ffeccc !important;
   height: 19px;
 }
-.expand-list--item{
+.expand-list--item {
   max-width: 300px !important;
 }
 </style>
+<!-- /mark-paid/{id} -->

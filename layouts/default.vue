@@ -7,10 +7,16 @@
         </div>
         <v-layout justify-space-between class="tab__liner">
           <v-tabs>
-            <v-tab @click="$store.dispatch('get_all_users')">All</v-tab>
-            <v-tab @click="$store.commit('allPaidPayments')">Paid</v-tab>
-            <v-tab>Unpaid</v-tab>
-            <v-tab @click="$store.commit('allOverduePayments')">Overdue</v-tab>
+            <v-tab @click="$store.commit('mutateFilterType', '')">All</v-tab>
+            <v-tab @click="$store.commit('mutateFilterType', 'paid')"
+              >Paid</v-tab
+            >
+            <v-tab @click="$store.commit('mutateFilterType', 'unpaid')"
+              >Unpaid</v-tab
+            >
+            <v-tab @click="$store.commit('mutateFilterType', 'overdue')"
+              >Overdue</v-tab
+            >
           </v-tabs>
           <p class="mb-0 amount_pay">
             Total payable amount:
