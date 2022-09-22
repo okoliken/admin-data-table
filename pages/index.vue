@@ -4,7 +4,7 @@
       <v-card class="my-5 pa-3">
         <v-layout justify-space-between>
           <v-flex md5 class="d-flex">
-            <v-menu offset-y :close-on-click="false">
+            <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   v-bind="attrs"
@@ -18,38 +18,46 @@
                   <span class="filter">Filter</span>
                 </v-btn>
               </template>
-              <v-list width="300px" dense>
+              <v-list width="220px" dense>
                 <v-list-item>
                   <div class="expand-list--item">
                     <h4>Sort by:</h4>
 
-                    <div>
+                    <div
+                      class="d-flex flex-column"
+                      style="width: 100% !important"
+                    >
                       <div>
                         <v-radio-group v-model="radioGroup">
                           <v-radio
                             dense
+                            @click="$store.commit('sortDefault')"
                             label="Default"
                             value="Default"
                           ></v-radio>
                           <v-radio
                             dense
-                            label="First Name"
-                            value="First Name"
+                            @click="$store.commit('sortFirstName')"
+                            label="First name"
+                            value="First name"
                           ></v-radio>
                           <v-radio
                             dense
-                            label="Last Name"
-                            value="Last Name"
+                            @click="$store.commit('sortLastName')"
+                            label="Last name"
+                            value="Last name"
                           ></v-radio>
                           <v-radio
                             dense
-                            label="Due Date"
-                            value="Due Date"
+                            @click="$store.commit('sortDueDate')"
+                            label="Due date"
+                            value="Due date"
                           ></v-radio>
                           <v-radio
                             dense
-                            label="Last Login"
-                            value="Last Login"
+                            @click="$store.commit('sortLogin')"
+                            label="Last login"
+                            value="Last login"
                           ></v-radio>
                         </v-radio-group>
                       </div>
@@ -118,7 +126,9 @@
           >
             <template v-slot:item.firstName="{ item }">
               <v-layout column>
-                <span class="font-weight-bold">{{ item.firstName }}</span>
+                <span class="font-weight-bold"
+                  >{{ item.firstName }} {{ item.lastName }}</span
+                >
                 <span class="email">{{ item.email }}</span>
               </v-layout>
             </template>
@@ -147,7 +157,7 @@
                   />
                   {{ item.userStatus }}</v-chip
                 >
-                <span class="email">{{ item.email }}</span>
+                <span class="email">Last login: {{ item.lastLogin }}</span>
               </v-layout>
             </template>
             <template v-slot:item.paymentStatus="{ item }">
@@ -187,12 +197,49 @@
             </template>
 
             <template v-slot:item.actions="{ item }">
-              <v-btn icon> <v-icon small> mdi-dots-vertical </v-icon></v-btn>
+              <v-menu offset-y :close-on-click="false">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on" icon>
+                    <v-icon> mdi-dots-vertical </v-icon></v-btn
+                  >
+                </template>
+                <v-list>
+                  <v-list-item
+                    @click="
+                      changeAccountStatus({ type: 'activate', id: item.id })
+                    "
+                    link
+                    color="#F4F2FF"
+                    class="green--text"
+                  >
+                    Activate User
+                  </v-list-item>
+                  <v-list-item
+                    @click="
+                      changeAccountStatus({ type: 'deactivate', id: item.id })
+                    "
+                    link
+                    color="#F4F2FF"
+                  >
+                    Deactivate User
+                  </v-list-item>
+                  <v-list-item
+                    @click="
+                      changeAccountStatus({ type: 'delete', id: item.id })
+                    "
+                    link
+                    color="#F4F2FF"
+                    class="red--text"
+                  >
+                    Delete User
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </template>
 
             <template v-slot:expanded-item="{ headers, item }">
               <th :colspan="headers.length">
-                More info about {{ item.amountInCents }}
+                {{ item.activities }}
               </th>
             </template>
           </v-data-table>
@@ -282,7 +329,17 @@ export default {
       } else return;
     },
     // END
-
+    async changeAccountStatus(value) {
+      this.loading = true;
+      await this.$store
+        .dispatch("status_changer", value)
+        .then(() => {
+          this.getAllPayments();
+        })
+        .catch((err) => {
+          return err;
+        });
+    },
     paymentColor(col) {
       if (col == "paid") {
         return "#007F00";
@@ -348,7 +405,8 @@ export default {
   height: 19px;
 }
 .expand-list--item {
-  max-width: 300px !important;
+  max-width: 200px !important;
+  width: 100% !important;
 }
 </style>
 <!-- /mark-paid/{id} -->

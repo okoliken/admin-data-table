@@ -28,6 +28,7 @@
         </v-layout>
         <nuxt />
       </v-container>
+      
     </v-main>
   </v-app>
 </template>
@@ -135,6 +136,7 @@ tr:hover {
   flex-direction: row-reverse !important;
   justify-content: space-between;
   max-width: 300px !important;
+  width: 100% !important;
 }
 .v-list-item {
   width: 100% !important;

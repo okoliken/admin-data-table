@@ -12,7 +12,7 @@ table; the search should be done client side only. --- DONE
 ● Each row of users should be expandable to show details of the user.
 
 ● As the admin, I would like to sort the table of users according to the
-users’ first name, last name, and email.
+users’ first name, last name, and email. --- DONE
 
 ● As the admin, I would like to select a user row previously marked as
 unpaid and mark it as paid by checking the checkbox on the row and
