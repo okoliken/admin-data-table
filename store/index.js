@@ -77,7 +77,7 @@ export const actions = {
     } else if (type == "deactivate") {
       const data = await this.$axios.$patch(`/deactivate-user/${id}`);
       return data;
-    } else if (type == "remove") {
+    } else if (type == "delete") {
       const data = await this.$axios.$delete(`/remove-user/${id}`);
       return data;
     }
