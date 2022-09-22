@@ -5,13 +5,21 @@
         <div class="data-table__header">
           <h3>Table Heading</h3>
         </div>
-        <v-tabs class="tab__liner">
-          <v-tab>All</v-tab>
-          <v-tab>Paid</v-tab>
-          <v-tab>Unpaid</v-tab>
-          <v-tab>Overdue</v-tab>
-        </v-tabs>
-        
+        <v-layout justify-space-between class="tab__liner">
+          <v-tabs>
+            <v-tab @click="$store.dispatch('get_all_users')">All</v-tab>
+            <v-tab @click="$store.commit('allPaidPayments')">Paid</v-tab>
+            <v-tab>Unpaid</v-tab>
+            <v-tab @click="$store.commit('allOverduePayments')">Overdue</v-tab>
+          </v-tabs>
+          <p class="mb-0 amount_pay">
+            Total payable amount:
+            <span style="color: #6d5bd0" class="font-weight-bold">{{
+              totalAmount | formatPrice
+            }}</span>
+            USD
+          </p>
+        </v-layout>
         <nuxt />
       </v-container>
     </v-main>
@@ -23,6 +31,11 @@ export default {
   name: "DefaultLayout",
   data() {
     return {};
+  },
+  computed: {
+    totalAmount() {
+      return this.$store.getters.calculate_amount_payable;
+    },
   },
 };
 </script>
@@ -39,7 +52,7 @@ export default {
 .v-tab {
   text-transform: capitalize !important;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 14px !important;
   color: #6e6893 !important;
   padding: 0;
 }
@@ -70,6 +83,11 @@ export default {
 .tab__liner {
   border-bottom: 2px solid #c6c2de !important;
   transform: translateY(-1px);
+}
+.amount_pay {
+  font-size: 14px;
+  color: #6e6893;
+  font-weight: 500;
 }
 .v-icon {
   color: #8b83ba !important;
@@ -106,5 +124,14 @@ tbody tr td {
 tr:hover {
   background-color: #fbf9ff !important;
   cursor: pointer;
+}
+.v-radio {
+  flex-direction: row-reverse !important;
+  justify-content: space-between;
+  max-width: 300px !important;
+}
+.v-list-item {
+  width: 100% !important;
+  max-width: 100%;
 }
 </style>

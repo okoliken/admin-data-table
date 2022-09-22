@@ -4,7 +4,7 @@
       <v-card class="my-5 pa-3">
         <v-layout justify-space-between>
           <v-flex md5 class="d-flex">
-            <v-menu offset-y>
+            <v-menu  offset-y :close-on-click="false">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   v-bind="attrs"
@@ -18,8 +18,55 @@
                   <span class="filter">Filter</span>
                 </v-btn>
               </template>
-              <v-list>
-                <v-list-item> </v-list-item>
+              <v-list width="300px" dense>
+                <v-list-item>
+                  <div class="expand-list--item">
+                    <h4>Sort by:</h4>
+
+                    <div>
+                      <div >
+                        <v-radio-group v-model="radioGroup">
+                          <v-radio
+                            dense
+                            label="Default"
+                            value="Default"
+                          ></v-radio>
+                          <v-radio
+                            dense
+                            label="First Name"
+                            value="First Name"
+                          ></v-radio>
+                          <v-radio
+                            dense
+                            label="Last Name"
+                            value="Last Name"
+                          ></v-radio>
+                          <v-radio
+                            dense
+                            label="Due Date"
+                            value="Due Date"
+                          ></v-radio>
+                          <v-radio
+                            dense
+                            label="Last Login"
+                            value="Last Login"
+                          ></v-radio>
+                        </v-radio-group>
+                      </div>
+                      <v-divider></v-divider>
+
+                      <v-radio-group v-model="radioGroup2">
+                        <v-radio dense label="All" value="All"></v-radio>
+                        <v-radio dense label="Active" value="Active"></v-radio>
+                        <v-radio
+                          dense
+                          label="Inactive"
+                          value="Inactive"
+                        ></v-radio>
+                      </v-radio-group>
+                    </div>
+                  </div>
+                </v-list-item>
               </v-list>
             </v-menu>
 
@@ -129,9 +176,7 @@
             </template>
 
             <template v-slot:item.actions="{ item }">
-              <v-btn icon>
-                <v-icon small> mdi-dots-vertical </v-icon></v-btn
-              >
+              <v-btn icon> <v-icon small> mdi-dots-vertical </v-icon></v-btn>
             </template>
           </v-data-table>
         </div>
@@ -159,11 +204,16 @@ export default {
         { text: "AMOUNT", value: "amountInCents", sortable: false },
         { text: "", value: "actions", sortable: false },
       ],
-      candidateId: "22XkZJQ5i87gvSY",
-      all_users: [],
       loading: false,
-      search:''
+      search: "",
+      radioGroup: 1,
+      radioGroup2: 1,
     };
+  },
+  computed:{
+    all_users(){
+      return this.$store.state.all_users
+    }
   },
   methods: {
     paymentColor(col) {
@@ -186,10 +236,11 @@ export default {
   },
   mounted() {
     this.loading = true;
-    this.$store.dispatch("get_all_users", this.candidateId).then((response) => {
-      this.all_users = response.data;
+    this.$store.dispatch("get_all_users").then(() => {
       this.loading = false;
     });
+
+   
   },
 };
 </script>
@@ -227,5 +278,8 @@ export default {
 .bg-light-yellow {
   background-color: #ffeccc !important;
   height: 19px;
+}
+.expand-list--item{
+  max-width: 300px !important;
 }
 </style>
