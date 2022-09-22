@@ -61,7 +61,7 @@
                           ></v-radio>
                         </v-radio-group>
                       </div>
-                      <v-divider></v-divider>
+                      <!-- <v-divider></v-divider>
 
                       <v-radio-group v-model="radioGroup2">
                         <v-radio dense label="All" value="All"></v-radio>
@@ -70,7 +70,7 @@
                           dense
                           label="Inactive"
                           value="Inactive"
-                        ></v-radio>
+                        ></v-radio> -->
                       </v-radio-group>
                     </div>
                   </div>
