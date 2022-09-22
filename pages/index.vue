@@ -15,7 +15,7 @@
                   color="#C6C2DE"
                 >
                   <v-icon large left color="#8B83BA">mdi-filter</v-icon>
-                  <span class="filter">Filter</span>
+                  <span class="filter font-weight-bold">Sort</span>
                 </v-btn>
               </template>
               <v-list width="220px" dense>
